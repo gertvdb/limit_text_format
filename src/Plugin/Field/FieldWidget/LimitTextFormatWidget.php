@@ -44,19 +44,19 @@ class LimitTextFormatWidget extends TextareaWidget implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, ConfigFactoryInterface $config_factory, AccountProxyInterface $current_user) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->configFactory = $config_factory;
-    $this->currentUser = $current_user;
+  public function __construct($pluginId, $pluginDefinition, FieldDefinitionInterface $fieldDefinition, array $settings, array $thirdPartySettings, ConfigFactoryInterface $configFactory, AccountProxyInterface $currentUser) {
+    parent::__construct($pluginId, $pluginDefinition, $fieldDefinition, $settings, $thirdPartySettings);
+    $this->configFactory = $configFactory;
+    $this->currentUser = $currentUser;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $pluginId, $pluginDefinition) {
     return new static(
-      $plugin_id,
-      $plugin_definition,
+      $pluginId,
+      $pluginDefinition,
       $configuration['field_definition'],
       $configuration['settings'],
       $configuration['third_party_settings'],
@@ -86,18 +86,18 @@ class LimitTextFormatWidget extends TextareaWidget implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $element = parent::settingsForm($form, $form_state);
+  public function settingsForm(array $form, FormStateInterface $formState) {
+    $element = parent::settingsForm($form, $formState);
 
-    $option_formats = [];
+    $optionFormats = [];
     foreach (filter_formats() as $format) {
-      $option_formats[$format->id()] = $format->label();
+      $optionFormats[$format->id()] = $format->label();
     }
 
     $element['limit_text_format'] = [
       '#title' => t('Limit text formats'),
       '#type' => 'checkboxes',
-      '#options' => $option_formats,
+      '#options' => $optionFormats,
       '#default_value' => $this->getAllowedTextFormats(),
       '#required' => TRUE,
     ];
@@ -108,8 +108,8 @@ class LimitTextFormatWidget extends TextareaWidget implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element = parent::formElement($items, $delta, $element, $form, $form_state);
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $formState) {
+    $element = parent::formElement($items, $delta, $element, $form, $formState);
 
     // Get a list of formats that the current user has access to.
     $formats = filter_formats($this->currentUser);
@@ -118,19 +118,19 @@ class LimitTextFormatWidget extends TextareaWidget implements ContainerFactoryPl
     $formats = array_intersect_key($formats, array_flip($this->getAllowedTextFormats()));
 
     // Pass the widget allowed formats to the after build.
-    $widget_allowed_formats = [];
+    $widgetAllowedFormats = [];
     foreach ($formats as $format) {
-      $widget_allowed_formats[$format->id()] = $format->label();
+      $widgetAllowedFormats[$format->id()] = $format->label();
     }
 
-    $element['#widget_limit_text_format'] = $widget_allowed_formats;
+    $element['#widget_limit_text_format'] = $widgetAllowedFormats;
     return $element;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function afterBuild(array $element, FormStateInterface $form_state) {
+  public static function afterBuild(array $element, FormStateInterface $formState) {
     $children = Element::children($element);
     foreach ($children as $key) {
 
@@ -159,17 +159,17 @@ class LimitTextFormatWidget extends TextareaWidget implements ContainerFactoryPl
    */
   private function getAllowedTextFormats() {
     // Get the defined text formats for this widget.
-    $allowed_text_formats = array_filter($this->getSetting('limit_text_format'));
+    $allowedTextFormats = array_filter($this->getSetting('limit_text_format'));
 
     // Get the filter config and append the default fallback format
     // when no formats are defined or when option to always show the
     // default fallback is checked.
     $config = $this->configFactory->get('filter.settings');
-    if (empty($allowed_text_formats) || $config->get('always_show_fallback_choice')) {
-      $allowed_text_formats += [$config->get('fallback_format') => $config->get('fallback_format')];
+    if (empty($allowedTextFormats) || $config->get('always_show_fallback_choice')) {
+      $allowedTextFormats += [$config->get('fallback_format') => $config->get('fallback_format')];
     }
 
-    return $allowed_text_formats;
+    return $allowedTextFormats;
   }
 
 }
