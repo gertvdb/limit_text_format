@@ -16,3 +16,4 @@ To install this module, do the following:
 With composer:
 1. ```composer require gertvdb/limit_text_format```
 
+# limited_format_text
