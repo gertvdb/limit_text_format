@@ -1,6 +1,5 @@
 name: Limit Text Format
 type: module
 description: 'Widget for formatted text fields to limit the allowed text formats.'
-core: 8.x
+core_version_requirement: ^8.8 || ^9
 package: Widgets
-version: '8.x-1.0'
