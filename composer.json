@@ -1,6 +1,6 @@
 {
-  "name": "gertvdb/limit_text_format",
-  "description": "Widget for formatted text fields to limit the allowed text formats",
+  "name": "gertvdb/limit_tex_format",
+  "description": "widget to limit the text formats on a textarea",
   "type": "drupal-module",
   "license": "GPL-2.0+",
   "repositories": {
@@ -20,7 +20,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Drupal\\limit_text_format\\": "src/"
+      "Drupal\\limit_tex_format\\": "src/"
     }
   },
   "config": {
