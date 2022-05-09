@@ -20,7 +20,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Drupal\\taskbar\\": "src/"
+      "Drupal\\limit_text_format\\": "src/"
     }
   },
   "config": {
